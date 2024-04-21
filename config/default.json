@@ -1,0 +1,20 @@
+{
+    "server" : {
+        "port": 3500
+    },
+    "email": {
+        "minId": 10000,
+        "maxId": 100000
+    },
+    "sequelizeDbErp": {
+        "schemaErp": "Erp",
+        "collectionEmails": "Emails" 
+    },
+    "seqDbConfig": {
+        "username": "root",
+        "password": "password",
+        "host": "localhost",
+        "port": 3306,
+        "dialect": "mysql"
+    }
+}
