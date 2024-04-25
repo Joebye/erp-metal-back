@@ -8,13 +8,17 @@
     },
     "sequelizeDbErp": {
         "schemaErp": "Erp",
-        "collectionEmails": "Emails" 
+        "schemaErpProd": "ErpProd",
+        "collectionEmails": "Emails",
+        "collectionProducts": "Products",
+        "collectionProductsProps": "ProductsProps"
     },
     "seqDbConfig": {
         "username": "root",
         "password": "password",
         "host": "localhost",
         "port": 3306,
-        "dialect": "mysql"
+        "dialect": "mysql",
+        "timestamps": false
     }
 }

@@ -1,0 +1,23 @@
+{
+
+    "productsShippingMap":  {
+        "Aluminum foil": "Hazardous materials",
+        "Aluminum Bar": "Hazardous materials",
+        "Titanium tube": "None",
+        "Copper sheets": "None",
+        "Galvanized steel": "Bulky items",
+        "Copper pipes": "Bulky items",
+        "Tin cans": "None",
+        "Aluminum extrusions": "Bulky items",
+        "Copper wires": "None",
+        "Steel sheets": "Bulky items"
+
+    },
+"minCost": 100,
+"maxCost": 300,
+"minQuantStock": 5,
+"maxQuantStock": 100,
+"minDueDateDays": 10,
+"maxDueDateDays": 20
+
+}
