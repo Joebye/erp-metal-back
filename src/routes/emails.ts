@@ -36,7 +36,6 @@ emails.get('/requests', asyncHandler(
 emails.get('/requests/:id', asyncHandler(
     async(req, res) => {
     const generatedQuote = await emailsService.generRFQ(req.params.id);
-    
     res.send(generatedQuote);
     }
 ))
