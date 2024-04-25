@@ -10,7 +10,6 @@ import moment from "moment";
 const schemaDb = config.get('sequelizeDbErp.schemaErp') as string;
 const collectionEmails = config.get('sequelizeDbErp.collectionEmails') as string;
 const collectionProducts = config.get('sequelizeDbErp.collectionProducts') as string;
-const collectionProductsProps = config.get('sequelizeDbErp.collectionProductsProps') as string;
 const sequelize = new SequelizeDb(schemaDb);
 
 
@@ -56,12 +55,6 @@ export const EmailsErp = sequelize.clientDb.define(collectionEmails, {
 
 
 export const ProductsErp = sequelize.clientDb.define(collectionProducts, {
-    id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,
-    },
     nameProduct: {
     type: DataTypes.STRING,
     allowNull: false
@@ -93,14 +86,18 @@ connection();
 async function connection () {
 await sequelize.connect();
 const products = await ProductsErp.findAll();
-console.log('products:', products);
-
-
 if (products.length == 0) {
     fillProductsTables();
 } else {
     console.log('data in the db already exists: ', products.map(it => {
-        return {'name of product': it.get('nameProduct')}
+        return {
+            'id': it.get('id'),
+            'product': it.get('nameProduct'),
+            'in stock': it.get('quantityStock')
+            
+            
+        
+        }
         }));
     }
 }

@@ -1,5 +1,8 @@
 import config from 'config';
-import {EmailsErp} from '../domain/ModelConnectionEmails';
+import { EmailsErp, ProductsErp } from '../domain/ModelConnectionEmails';
+import { ProductsShippingMap } from '../types/types';
+import productsShippingMapData from '../config-common/product-config.json'; 
+import { Sequelize} from 'sequelize';
 
 export default class EmailsService {
        
@@ -30,6 +33,36 @@ export default class EmailsService {
         console.log(id);
         
         const res = await EmailsErp.findByPk(id);
+        const text = res?.dataValues.text;
+        let foundItemsObj = findMatching(text);
+        console.log(foundItemsObj);
+        const keys = Object.keys(foundItemsObj);
+        const vals = Object.values(foundItemsObj);
+        let constExistProdsInDb: any = {};
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            const val = vals[i];
+
+
+        constExistProdsInDb = await ProductsErp.findAll({
+            attributes: ['id', 'nameProduct', 'cost', 'shippingRestrictions', 'dueDate', 'quantityStock', 'dueDate', 'inventoryCost',
+            [
+                Sequelize.literal('quantityStock - :valueClient'), 'quantNeeded'
+            ]
+            ], where: {nameProduct: key},
+            replacements: {
+                valueClient: val
+            }
+       });
+        
+        
+    }
+            console.log(constExistProdsInDb.map((it: { dataValues: { nameProduct: any, quantNeeded: any, inventoryCost: any}; }) => {
+            return {n: it.dataValues.nameProduct, stock: it.dataValues.quantNeeded, inventCost: it.dataValues.inventoryCost}
+        }));
+  
+        
+        
         return res;
         
        }
@@ -58,9 +91,37 @@ export default class EmailsService {
         return id;
         }
 
-
-
-
-
-
 }
+
+function findMatching(text: string) {
+    const prodShipMap: ProductsShippingMap = productsShippingMapData.productsShippingMap;
+    const arProd = Object.keys(prodShipMap);
+    const targetText = text.toLowerCase().split(' ').join('');
+    let foundProducts: any = {};
+    let quantityAr: any;
+    let quantProd = 0;
+     
+    arProd.forEach(product => {
+        const productName = product.toLowerCase().replace(/\s+/g, ''); 
+            if (targetText.includes(productName)) {
+                
+                const startIndex = targetText.indexOf(productName) + productName.length;
+                quantityAr = targetText.substring(startIndex).match(/^\d+/);
+                
+                if (quantityAr) {
+                    quantProd = parseInt(quantityAr[0]); 
+                    foundProducts[product] = quantProd;
+                } else {
+                    quantityAr = [];
+                    quantProd = 0;
+                    foundProducts[product] = quantProd;
+                }
+                
+                
+            }
+        });
+        return foundProducts;
+      
+      }
+
+

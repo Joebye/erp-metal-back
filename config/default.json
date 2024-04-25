@@ -8,10 +8,8 @@
     },
     "sequelizeDbErp": {
         "schemaErp": "Erp",
-        "schemaErpProd": "ErpProd",
         "collectionEmails": "Emails",
-        "collectionProducts": "Products",
-        "collectionProductsProps": "ProductsProps"
+        "collectionProducts": "Products"
     },
     "seqDbConfig": {
         "username": "root",
